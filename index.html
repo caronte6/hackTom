@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UNAHUR TIC - HACKATON PIA</title>
-    <!-- Librería p5.js y p5.sound -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
+    <title>UNAHUR QUEST: La Liga del Analítico</title>
     <style>
       :root {
         color-scheme: dark;
@@ -34,8 +31,9 @@
       .terminal-box {
         border: 1px solid var(--border-color);
         padding: 1.5rem;
-        max-width: 620px;
-        width: 90%;
+        box-sizing: border-box;
+        max-width: 900px;
+        width: 94%;
         box-shadow: 0 0 20px rgba(0, 255, 204, 0.12);
         background: var(--panel-bg);
         text-align: center;
@@ -73,6 +71,41 @@
         display: flex;
         justify-content: center;
         margin-top: 1rem;
+        width: 100%;
+      }
+
+      #game-container canvas {
+        max-width: 100%;
+        width: 100% !important;
+        height: auto !important;
+        image-rendering: auto;
+      }
+
+      #difficulty-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      #difficulty-controls[hidden] {
+        display: none;
+      }
+
+      #options-controls {
+        margin-top: 0.75rem;
+      }
+
+      #options-controls[hidden] {
+        display: none;
+      }
+
+      .difficulty-option[aria-pressed="true"] {
+        background: var(--btn-hover);
+        color: var(--btn-text-hover);
+        box-shadow: 0 0 10px var(--text-color);
       }
 
       .btn-action {
@@ -147,7 +180,7 @@
   <body>
     <div class="terminal-box">
       <div class="header-bar">
-        <h1>EMOSIDO ENGAÑADOS</h1>
+        <h1>UNAHUR QUEST</h1>
         <div class="header-buttons">
           <button class="btn-action" id="btn-sound" onclick="toggleAudio()">
             🔊 Audio: ON
@@ -157,108 +190,50 @@
           </button>
         </div>
       </div>
-      <p>
-        > Usá las flechas del teclado para guiar al michi y atrapar el láser.
-      </p>
+      <p>> Tu aventura universitaria en la UNAHUR comienza acá.</p>
       <div id="game-container"></div>
+      <div id="difficulty-controls" aria-label="Elegí la dificultad">
+        <span>Dificultad:</span>
+        <button class="btn-action difficulty-option" type="button" aria-pressed="false" onclick="selectDifficulty('Fácil')">Fácil</button>
+        <button class="btn-action difficulty-option" type="button" aria-pressed="true" onclick="selectDifficulty('Normal')">Normal</button>
+      </div>
+      <div id="options-controls" hidden>
+        <button class="btn-action" type="button" onclick="returnToMenu()">Volver al menú</button>
+      </div>
     </div>
 
     <!-- Modal de Instrucciones -->
     <div class="modal-overlay" id="instructions-modal">
       <div class="modal-content">
-        <h2>>¡BIENVENIDOS A LA HACKATÓN!</h2>
+        <h2>> UNAHUR QUEST: LA LIGA DEL ANALÍTICO</h2>
         <p>
-          <strong>
-            > Su misión es, partiendo de este juego básico... ¡convertirlo en el
-            juego que quieran!</strong
-          ><br />
+          Sos estudiante de la Tecnicatura en Programación y tu aventura
+          universitaria empieza en el campus de la UNAHUR.
         </p>
-        <p>
-          La buena noticia es que no necesitan saber nada previamente, porque
-          van a poner a trabajar a la IA (cualquier LLM de su preferencia, GPT,
-          Claude, DeepSeek, Gemini, etc, no hace falta que sea solo uno).
-          Ustedes toman el rol de "directores del proyecto".
-        </p>
-        <p>
-          Les dejamos acá abajo data y algunas pautas mínimas a
-          cumplir/respetar, solo para limitarnos teniendo en cuenta la duración
-          de esta actividad (unas 3 horas aproximadamente).
-        </p>
-        <br />
-        <p>
-          <strong>1. FORMATO:</strong><br />
-          Equipos de entre, sugerimos, 2 a 5 integrantes.
-        </p>
-
-        <p><strong>2. EL JUEGO DEBERÍA CONTAR MÍNIMAMENTE CON:</strong></p>
+        <p><strong>CONTROLES</strong></p>
         <ul>
-          <li>
-            <strong>Pantalla y Menú Principal:</strong> Título, fondo y opciones
-            (Comenzar, Opciones, Salir).
-          </li>
-          <li>
-            <strong>Instrucciones claras:</strong> Objetivos visibles en el menú
-            u opciones.
-          </li>
-          <li>
-            <strong>Dificultad/Escenarios:</strong> Al menos 2 niveles o
-            progresión de dificultad.
-          </li>
-          <li>
-            <strong>Audio:</strong> Efectos de sonido (SFX) y/o música de fondo.
-          </li>
-          <li>
-            <strong>Métrica obligatoria:</strong> El juego debe llevar un
-            <u>conteo de prompts/iteraciones</u> que se hicieron hasta el
-            momento (esto servirá en caso de empates)
-          </li>
+          <li>En el menú: flechas arriba/abajo y Enter, o clic para elegir.</li>
+          <li>Flechas o WASD: moverte en cuatro direcciones.</li>
+          <li>Audio: activar o silenciar la música retro y los efectos.</li>
+          <li>E: entrar a los edificios; completá las materias de un
+            cuatrimestre para desbloquear el siguiente.</li>
+          <li>Dentro: hablá con el preceptor/a, buscá tu credencial en el
+            mostrador y volvé para completar la bienvenida.</li>
+          <li>Acercate a cada docente y pulsá E para rendir. Las correlatividades
+            oficiales bloquean las materias que todavía no podés cursar.
+            Respondé con 1–3, flechas y Enter, o clic; necesitás 2 de 3 para
+            conseguir la medalla de esa materia. Podés reintentar.</li>
+          <li>I: abrir el Analítico. Usá las flechas izquierda/derecha para
+            consultar los cinco cuatrimestres.</li>
+          <li>En Malvinas Argentinas, completá las 19 materias y vencé a Hernán
+            Coniglio respondiendo correctamente 4 de sus 5 preguntas.</li>
+          <li>E cerca de la salida: volver al campus. Escape: salir del edificio.</li>
         </ul>
-
-        <p><strong>3. PUNTAJE Y GANADORES/AS </strong></p>
         <p>
-          Cada implementación supone un logro alcanzado por el equipo y la suma
-          de un puntaje:
+          Desde Opciones podés elegir dificultad Fácil o Normal. La aventura
+          empieza en Justicia Social y termina en Malvinas Argentinas.
         </p>
-        <ul>
-          <li>
-            <strong>Logro "Bienvenidos" (+75 pts):</strong> El juego incluye una
-            pantalla principal visualmente copada, con el título del juego (25
-            pts) y un menú de opciones interactivo (50 pts)
-          </li>
-          <li>
-            <strong>Logro "Manual de supervivencia" (+100 pts):</strong> El
-            juego incluye una sección clara y fácilmente visible que le explique
-            al jugador cómo jugar y cuál es el objetivo
-          </li>
-          <li>
-            <strong>Logro "Too easy for me" (+150 pts):</strong> El juego
-            incluye al menos 2 niveles de dificultad o escenarios diferentes
-          </li>
-          <li>
-            <strong
-              >Logro "Hable más fuerte que tengo una toalla" (+125 pts):</strong
-            >
-            El juego incluye sonidos, sean fx (+50 pts) o música (+75 pts).
-          </li>
-          <li>
-            <strong>Logro "Auditoría severa" (+100 pts):</strong> El juego
-            incluye contador de prompts/iteraciones que se requirieron para
-            programarlo
-          </li>
-          <li>
-            <strong>Logro "Democracia, aún te tengo fe" (+200 pts):</strong> El
-            juego es el más votado por los participantes del hackaton (hacia el
-            final hacemos votación)
-          </li>
-        </ul>
-        <p><strong>4. LÍMITES DE P5.JS (no pretendan implementar):</strong></p>
-        <ul>
-          <li>Gráficos 3D complejos o motores físicos avanzados.</li>
-          <li>
-            Multijugador online o interfaces web pesadas dentro del canvas.
-          </li>
-        </ul>
-        <p><strong> 5. REGLA DE ORO IRROMPIBLE: ¡DIVERTIRSE!</strong></p>
+        <p><strong>ITERACIÓN DE DESARROLLO REGISTRADA: 14</strong></p>
 
         <div class="modal-footer">
           <button class="btn-action" onclick="toggleModal(false)">
@@ -274,23 +249,6 @@
         modal.style.display = show ? "flex" : "none";
       }
 
-      // Control global de Audio On/Off para el maullido nativo
-      let soundMuted = false;
-      function toggleAudio() {
-        soundMuted = !soundMuted;
-        const btn = document.getElementById("btn-sound");
-        if (soundMuted) {
-          btn.innerText = "🔇 Audio: OFF";
-          if (typeof soundCat !== "undefined" && soundCat) {
-            soundCat.muted = true;
-          }
-        } else {
-          btn.innerText = "🔊 Audio: ON";
-          if (typeof soundCat !== "undefined" && soundCat) {
-            soundCat.muted = false;
-          }
-        }
-      }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>

@@ -1,9 +1,11 @@
 let imgClosed, imgOpen;
+let menuPrincipalImage;
 
 // preload() carga los archivos de imagen antes de iniciar el juego
 function preload() {
     imgClosed = loadImage(BOCA_CERRADA_B64);
     imgOpen   = loadImage(BOCA_ABIERTA_B64);
+    menuPrincipalImage = loadImage("assets/menu-principal.png");
     soundCat = new Audio(MAULLIDO_B64);
 }
 
@@ -120,4 +122,49 @@ function drawBackgroundGrid() {
     strokeWeight(1);
     for (let x = 0; x < width; x += 16) line(x, 0, x, height);
     for (let y = 0; y < height; y += 16) line(0, y, width, y);
+}
+
+function drawStudentPixel(x, y, isMoving) {
+    const pixel = 4;
+    const sprite = [
+        "....HHHH....",
+        "...HYYYYH...",
+        "...HSSSSH...",
+        "...HSSSSH...",
+        "....SSSS....",
+        "...TTTTTT...",
+        "..TTTTTTTT..",
+        "..TTTWWTTT..",
+        "..TTTWWTTT..",
+        "...TTTTTT...",
+        "...PP..PP...",
+        "...PP..PP...",
+    ];
+    const palette = {
+        H: "#293346",
+        Y: "#e6be72",
+        S: "#efc59c",
+        T: "#3d9b91",
+        W: "#f3e8cb",
+        P: "#344d75",
+    };
+
+    push();
+    translate(Math.round(x), Math.round(y));
+    noStroke();
+    for (let row = 0; row < sprite.length; row++) {
+        for (let column = 0; column < sprite[row].length; column++) {
+            const colorCode = sprite[row][column];
+            if (colorCode === ".") continue;
+            fill(palette[colorCode]);
+            let legOffset = 0;
+            if (isMoving && row >= 10) {
+                legOffset = floor(frameCount / 6) % 2 === 0 ? 1 : -1;
+            }
+            rect(column * pixel, row * pixel + legOffset, pixel, pixel);
+        }
+    }
+    fill("#f2d480");
+    rect(25, 11, 2, 2);
+    pop();
 }
