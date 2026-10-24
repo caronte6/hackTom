@@ -131,6 +131,8 @@ de cambios al proyecto.
   y medallas, cinco edificios progresivamente desbloqueables y navegación del
   Analítico por cuatrimestre. Malvinas Argentinas cierra la carrera con un
   duelo de cinco preguntas contra Hernán Coniglio; se gana con cuatro aciertos.
+- **Interfaz:** se distribuyeron los tutores para evitar superposiciones en las
+  aulas con más materias y se despejó el espacio del jefe final.
 - **Correlatividades:** se codificaron las indicadas por el programa. Los
   contenidos de las materias electivas son preguntas ilustrativas, ya que el
   documento aclara que su oferta puede actualizarse cada ciclo lectivo.

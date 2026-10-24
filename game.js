@@ -72,8 +72,8 @@ const MEDAL_PASSING_SCORE = 2;
 const SEMESTER_COURSE_POSITIONS = {
   2: [{ x: 132, y: 130 }, { x: 351, y: 130 }, { x: 132, y: 222 }, { x: 351, y: 222 }],
   3: [{ x: 132, y: 183 }, { x: 351, y: 177 }, { x: 351, y: 232 }],
-  4: [{ x: 132, y: 118 }, { x: 214, y: 118 }, { x: 350, y: 118 }, { x: 132, y: 222 }, { x: 350, y: 222 }],
-  5: [{ x: 132, y: 130 }, { x: 351, y: 130 }, { x: 132, y: 222 }],
+  4: [{ x: 132, y: 118 }, { x: 280, y: 118 }, { x: 428, y: 118 }, { x: 132, y: 222 }, { x: 350, y: 222 }],
+  5: [{ x: 132, y: 130 }, { x: 351, y: 222 }, { x: 132, y: 222 }],
 };
 const ADDITIONAL_COURSES = [
   {
@@ -1147,14 +1147,6 @@ function drawBuildingInterior() {
     drawInteriorNoticeboard();
     drawReceptionDesk();
     drawPreceptor();
-  } else {
-    drawInteriorNoticeboard();
-    fill("#4d4836");
-    rect(350, 91, 120, 37);
-    fill("#fff1ca");
-    textSize(7);
-    text("AULA DE CURSADA", 410, 101);
-    text(`${semester.length} MATERIAS · ${getSemesterMedalCount(building.semester)}/${semester.length} MEDALLAS`, 410, 114);
   }
   semester.forEach(drawCourseTutor);
   if (building.semester === 5) drawFinalBoss();
